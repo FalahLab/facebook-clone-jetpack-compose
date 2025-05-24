@@ -12,4 +12,5 @@ sealed class Routes(val routes: String) {
     object Friends : Routes("friends")
     object Menu : Routes("menu")
     object Nav : Routes("Nav")
+    object Market : Routes("market")
 }

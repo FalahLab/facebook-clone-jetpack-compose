@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import com.falahlab.facebookclonejetpackcompose.screens.Add
 import com.falahlab.facebookclonejetpackcompose.screens.Friends
 import com.falahlab.facebookclonejetpackcompose.screens.Home
+import com.falahlab.facebookclonejetpackcompose.screens.Market
 import com.falahlab.facebookclonejetpackcompose.screens.Menu
 import com.falahlab.facebookclonejetpackcompose.screens.Notification
 import com.falahlab.facebookclonejetpackcompose.screens.Profile
@@ -29,11 +30,13 @@ fun NavGraph(navController: NavHostController, modifier: Modifier = Modifier) {
         composable(Routes.Search.routes) { Search() }
         composable(Routes.Add.routes) { Add() }
         composable(Routes.Notification.routes) { Notification() }
-        composable(Routes.Profile.routes) { Profile() }
         composable(Routes.Nav.routes) { Nav(navController) }
         composable(Routes.Videos.routes) { Videos() }
         composable(Routes.Friends.routes) { Friends() }
         composable(Routes.Menu.routes) { Menu() }
+        composable(Routes.Profile.routes) { Profile() }
+        composable(Routes.Market.routes) { Market() }
+
 
 
 
