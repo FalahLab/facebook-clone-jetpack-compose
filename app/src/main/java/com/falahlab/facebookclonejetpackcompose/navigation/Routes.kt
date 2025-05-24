@@ -1,6 +1,6 @@
 package com.falahlab.facebookclonejetpackcompose.navigation
 
-sealed class Routes(val route: String) {
+sealed class Routes(val routes: String) {
 
     object Home : Routes("home")
     object Search : Routes("search")
@@ -8,4 +8,8 @@ sealed class Routes(val route: String) {
     object Notification : Routes("notification")
     object Profile : Routes("profile")
     object Splash : Routes("splash")
+    object Videos : Routes("videos")
+    object Friends : Routes("friends")
+    object Menu : Routes("menu")
+    object Nav : Routes("Nav")
 }
