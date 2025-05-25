@@ -32,7 +32,7 @@ fun Splash(navController: NavHostController) {
     }
 
     LaunchedEffect(true) {
-        delay(1000)
+        delay(500)
 
         navController.navigate(Routes.Nav.routes)
     }

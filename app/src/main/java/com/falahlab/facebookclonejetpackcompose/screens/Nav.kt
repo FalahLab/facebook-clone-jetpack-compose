@@ -10,22 +10,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.Email
 import androidx.compose.material.icons.rounded.Home
-import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.Notifications
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.icons.rounded.ShoppingCart
-import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -48,8 +45,8 @@ fun Nav(navController: NavHostController) {
     val navController1 = rememberNavController()
 
     Scaffold(
-        topBar = { TopNavBar(navController1) },
-        bottomBar = { BottomNavBar(navController1) }
+        topBar = { TopNavBar(navController1) }
+
     ) { innerPadding ->
         NavHost(
             navController = navController1,
@@ -69,109 +66,122 @@ fun Nav(navController: NavHostController) {
             composable(Routes.Videos.routes) { Videos() }
             composable(Routes.Friends.routes) { Friends() }
             composable(Routes.Menu.routes) { Menu() }
+            composable(Routes.Market.routes) { Market() }
+            composable(Routes.Chat.routes) { Chat() }
         }
     }
 }
-
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopNavBar(navController1: NavHostController) {
-    val items = listOf(
+    val mainNavItems = listOf(
+        NavItem("Home", Routes.Home.routes, Icons.Rounded.Home),
         NavItem("Videos", Routes.Videos.routes, Icons.Rounded.PlayArrow),
         NavItem("Friends", Routes.Friends.routes, Icons.Rounded.Person),
-        NavItem("Menu", Routes.Menu.routes, Icons.Rounded.Menu),
-        NavItem("Profile", Routes.Profile.routes, Icons.Rounded.AccountCircle),
         NavItem("Market", Routes.Market.routes, Icons.Rounded.ShoppingCart),
-        NavItem("Search", Routes.Search.routes, Icons.Rounded.Search),
-        NavItem("Add", Routes.Add.routes, Icons.Rounded.Add),
         NavItem("Notification", Routes.Notification.routes, Icons.Rounded.Notifications),
+        NavItem("Profile", Routes.Profile.routes, Icons.Rounded.AccountCircle)
     )
+
+    val actionNavItems = listOf(
+        NavItem("Add", Routes.Add.routes, Icons.Rounded.Add),
+        NavItem("Search", Routes.Search.routes, Icons.Rounded.Search),
+        NavItem("Chat", Routes.Chat.routes, Icons.Rounded.Email),
+    )
+
     val backStackEntry by navController1.currentBackStackEntryAsState()
 
-    CenterAlignedTopAppBar(
-        title = { Text("Facebook Clone") },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            titleContentColor = MaterialTheme.colorScheme.primary
-        ),
-        actions = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                items.forEach {
-                    val selected = it.route == backStackEntry?.destination?.route
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
 
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier
-                            .weight(1f)
-                            .clickable {
-                                navController1.navigate(it.route) {
-                                    popUpTo(navController1.graph.findStartDestination().id) {
-                                        saveState = true
-                                    }
-                                    launchSingleTop = true
-                                    restoreState = true
+    ) {
+        // First Row: Title and Action Icons
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = "Facebook Clone",
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.primary
+            )
+
+            Row {
+                actionNavItems.forEach { item ->
+                    IconButton(
+                        onClick = {
+                            navController1.navigate(item.route) {
+                                popUpTo(navController1.graph.findStartDestination().id) {
+                                    saveState = true
                                 }
+                                launchSingleTop = true
+                                restoreState = true
                             }
-                            .padding(vertical = 4.dp) // Minimal vertical space
+                        }
                     ) {
                         Icon(
-                            imageVector = it.icon,
-                            contentDescription = it.title,
-                            tint = if (selected) MaterialTheme.colorScheme.primary
-                            else MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                        Text(
-                            text = it.title,
-                            style = MaterialTheme.typography.labelSmall,
-                            color = if (selected) MaterialTheme.colorScheme.primary
-                            else MaterialTheme.colorScheme.onSurfaceVariant,
-                            textAlign = TextAlign.Center
+                            imageVector = item.icon,
+                            contentDescription = item.title,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
             }
         }
-    )
-}
 
+        // Second Row: Main Navigation Icons
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 4.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            mainNavItems.forEach { item ->
+                val selected = item.route == backStackEntry?.destination?.route
 
-
-
-@Composable
-fun BottomNavBar(navController1: NavHostController) {
-    val items = listOf(
-        NavItem("Home", Routes.Home.routes, Icons.Rounded.Home),
-
-
-    )
-    val backStackEntry by navController1.currentBackStackEntryAsState()
-
-    BottomAppBar {
-        items.forEach {
-            val selected = it.route == backStackEntry?.destination?.route
-
-            NavigationBarItem(
-                selected = selected,
-                onClick = {
-                    navController1.navigate(it.route) {
-                        popUpTo(navController1.graph.findStartDestination().id) {
-                            saveState = true
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .clickable {
+                            navController1.navigate(item.route) {
+                                popUpTo(navController1.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
                         }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                },
-                icon = { Icon(it.icon, contentDescription = it.title) },
-                label = { Text(it.title) }
-            )
+                        .padding(horizontal = 8.dp)
+                ) {
+                    Icon(
+                        imageVector = item.icon,
+                        contentDescription = item.title,
+                        tint = if (selected) MaterialTheme.colorScheme.primary
+                        else MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Text(
+                        text = item.title,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = if (selected) MaterialTheme.colorScheme.primary
+                        else MaterialTheme.colorScheme.onSurfaceVariant,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
         }
     }
 }
+
+
+
+
+
 
 
 @Preview(showBackground = true)
