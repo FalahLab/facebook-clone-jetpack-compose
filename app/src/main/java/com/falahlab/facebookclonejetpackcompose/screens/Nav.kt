@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccountCircle
-import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.material.icons.rounded.Email
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Notifications
@@ -86,7 +86,7 @@ fun TopNavBar(navController1: NavHostController) {
     )
 
     val actionNavItems = listOf(
-        NavItem("Add", Routes.Add.routes, Icons.Rounded.Add),
+        NavItem("Add", Routes.Add.routes, Icons.Rounded.AddCircle),
         NavItem("Search", Routes.Search.routes, Icons.Rounded.Search),
         NavItem("Chat", Routes.Chat.routes, Icons.Rounded.Email),
     )
